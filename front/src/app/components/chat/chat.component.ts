@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit {
   public users: number = 0;
   public message: string = "";
   public messages: any[] = [];
+  public userWriting: string;
 
   constructor(private chatService: ChatService) {}
 
@@ -27,11 +28,30 @@ export class ChatComponent implements OnInit {
     this.chatService.getUsers().subscribe((users: number) => {
       this.users = users;
     });
+
+    this.chatService.receiveIsWriting().subscribe((res: any) => {
+      var writing;
+      clearTimeout(writing);
+      this.userWriting = res.user;
+
+      writing = setTimeout(() => {
+        this.userWriting = null;
+      }, 1000);
+    });
   }
 
   addChat() {
     this.messages.push({ user: this.userName, message: this.message });
     this.chatService.sendChat(this.userName, this.message);
     this.message = "";
+  }
+
+  showIsWriting() {
+    if ((window as any).isWriting) return;
+
+    (window as any).isWriting = setTimeout(() => {
+      this.chatService.isWriting(this.userName);
+      (window as any).isWriting = false;
+    }, 1000);
   }
 }

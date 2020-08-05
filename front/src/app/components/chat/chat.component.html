@@ -3,16 +3,27 @@
   [ngStyle]="{ width: width, height: height }"
 >
   <div>
+    <p>Você está no chat como {{ userName }}</p>
     <p>
-      There are currently <strong>{{ users }}</strong> users online. Start
-      chatting!
+      Existem <strong>{{ users }}</strong> usuários online.
     </p>
 
-    <ul>
-      <li *ngFor="let msg of messages">
-        {{ msg.user === userName ? "Você" : msg.user }} - {{ msg.message }}
-      </li>
-    </ul>
+    <div class="messages">
+      <div
+        *ngFor="let msg of messages"
+        class="messages-item {{
+          msg.user === userName ? 'my' : 'other'
+        }}-message"
+      >
+        <div>
+          {{ msg.message }}
+        </div>
+      </div>
+    </div>
+
+    <p class="is-writting-message" [ngClass]="{ 'is-visible': userWriting }">
+      {{ userWriting }} está digitando...
+    </p>
   </div>
 
   <div class="wrapper-textarea">
@@ -24,6 +35,7 @@
       class="chat-input"
       [(ngModel)]="message"
       placeholder="type message..."
+      (keyup)="showIsWriting()"
       (keyup.enter)="addChat()"
     >
     </textarea>
