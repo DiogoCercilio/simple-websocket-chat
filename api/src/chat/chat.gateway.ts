@@ -31,4 +31,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onChat(client, message) {
     client.broadcast.emit('chat', message);
   }
+
+  @SubscribeMessage('writing')
+  async onWriting(client, user) {
+    client.broadcast.emit('writing', user);
+  }
 }
