@@ -1,0 +1,39 @@
+<section
+  class="app-chat {{ position }}"
+  [ngStyle]="{ width: width, height: height }"
+>
+  <div>
+    <p>
+      There are currently <strong>{{ users }}</strong> users online. Start
+      chatting!
+    </p>
+
+    <ul>
+      <li *ngFor="let msg of messages">
+        {{ msg.user === userName ? "Você" : msg.user }} - {{ msg.message }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="wrapper-textarea">
+    <textarea
+      spellcheck="true"
+      autoComplete="true"
+      autocorrect="true"
+      rows="1"
+      class="chat-input"
+      [(ngModel)]="message"
+      placeholder="type message..."
+      (keyup.enter)="addChat()"
+    >
+    </textarea>
+
+    <button (click)="addChat()" class="chat-button">
+      Enviar
+    </button>
+
+    <button (click)="attachFile()" class="chat-button">
+      Anexar arquivo
+    </button>
+  </div>
+</section>
